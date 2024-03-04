@@ -26,6 +26,10 @@ urlpatterns = [
     path('', views.SigninView.as_view(), name="signin"),
     path('index/', views.ProductListView.as_view(), name="index"),
     path('product/detail/<int:pk>/', views.ProductDetailView.as_view(), name='product-detail'),
-    path('home/', views.HomeView.as_view(), name  = "home")
+    path('home/', views.HomeView.as_view(), name  = "home"),
+    path('products/<int:pk>/AddToBasket/', views.AddToBasketView.as_view(), name="add-to-basket"),
+    path('basket/items/all/', views.BasketItemsListView.as_view(), name= "basket-items"),
+    path('basket/items/<int:pk>/remove/', views.BasketItemRemoveView.as_view(), name='basket-item-remove'),
+    path('basket/items/<int:pk>/qty/change', views.CartItemUpdateQtyView.as_view(), name='cartqty-edit')
    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

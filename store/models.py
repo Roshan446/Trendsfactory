@@ -42,14 +42,41 @@ class Basket(models.Model):
     updated_date=models.DateTimeField(auto_now=True)
     is_active=models.BooleanField(default=True)
 
+    @property
+    def cart_item(self):
+        return self.cartitem.filter(is_ordered_placed =False)
+    
+    @property
+    def item_count(self):
+        return self.cart_item.count()
+    @property
+    def basket_total(self):
+        basket_item = self.cart_item
+        if basket_item:
+            total = sum([bi.item_total for bi in basket_item])
+            return total
+        else:
+            return 0
+    
+
+
+
+
 
 class BasketItem(models.Model):
     product_object=models.ForeignKey(Product,on_delete=models.CASCADE)
     qty=models.PositiveIntegerField(default=1)
     basket_object=models.ForeignKey(Basket,on_delete=models.CASCADE,related_name="cartitem")
+    size_object = models.ForeignKey(Size, on_delete = models.CASCADE, null= True)
     created_date=models.DateTimeField(auto_now_add=True)
     updated_date=models.DateTimeField(auto_now=True)
     is_active=models.BooleanField(default=True)
+    is_ordered_placed = models.BooleanField(default = False)
+
+    @property
+    def item_total(self):
+        return self.qty * self.product_object.price
+
 
 def create_basket(sender, instance, created, **kwargs):
     if created:
