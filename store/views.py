@@ -126,3 +126,16 @@ class CartItemUpdateQtyView(View):
             basket_item_object.qty -=1
             basket_item_object.save() 
         return redirect("basket-items")
+
+class CheckoutView(View):
+    def get(self, request, *args, **kwargs):
+        
+        return render(request, "checkout.html")
+    
+    def post(self, request, *args, **kwargs):
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        address = request.POST.get("address")
+        print(email, phone, address)
+        return redirect("index")
+
