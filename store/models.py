@@ -84,6 +84,10 @@ class Order(models.Model):
     is_paid=models.BooleanField(default=False)
     total=models.PositiveIntegerField()
     email = models.CharField(max_length = 200, null = True)
+    
+    @property
+    def get_order_items(self):
+        return self.purchaseitems.all()
 
 
 class OrderItems(models.Model):

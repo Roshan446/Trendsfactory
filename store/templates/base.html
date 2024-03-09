@@ -11,6 +11,7 @@
     />
     <!-- Custom StyleSheet -->
     <link rel="stylesheet" href="{%static 'css/styles.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     {%block link_block%}
     {%endblock%}
     <title>Boy’s T-Shirt</title>
@@ -55,14 +56,14 @@
             <div class="icon">
               <i class="bx bx-search"></i>
             </div>
-            <div class="icon">
-              <i class="bx bx-heart"></i>
-              <span class="d-flex">0</span>
-            </div>
             <a href="{%url 'basket-items'%}" class="icon">
               <i class="bx bx-cart"></i>
               <span class="d-flex">{{cart_count}}</span>
             </a>
+            <div class="icon">
+              <a href="{%url 'signout'%}">logout</a>
+            </div>
+           
           </li>
         </ul>
 
@@ -73,15 +74,15 @@
           <div class="icon">
             <i class="bx bx-search"></i>
           </div>
-          <div class="icon">
-            <i class="bx bx-heart"></i>
-            <span class="d-flex">0</span>
-          </div>
           <a href="{%url 'basket-items'%}" class="icon">
             <i class="bx bx-cart"></i>
             <span class="d-flex">{{cart_count}}</span>
           </a>
         </div>
+          <div class="icon">
+            <a href="{%url 'signout'%}">logout</a>
+          </div>
+
 
         <div class="hamburger">
           <i class="bx bx-menu-alt-left"></i>
