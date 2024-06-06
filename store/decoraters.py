@@ -21,5 +21,5 @@ def owner_permission_required(fn):
             return redirect("signin")
         else:
             return fn(request, *args, **kwargs)
-        return wrapper
+    return wrapper
 

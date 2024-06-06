@@ -21,6 +21,12 @@ class Size(models.Model):
     def __str__(self):
         return self.name
 
+class Tag(models.Model):
+    name = models.CharField(max_length = 200, unique =True)
+
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     title=models.CharField(max_length=200)
@@ -32,6 +38,7 @@ class Product(models.Model):
     created_date=models.DateTimeField(auto_now_add=True)
     updated_date=models.DateTimeField(auto_now=True)
     is_active=models.BooleanField(default=True)
+    tag_objects = models.ManyToManyField(Tag, null = True)
 
     def __str__(self):
         return self.title
@@ -84,15 +91,13 @@ class Order(models.Model):
     is_paid=models.BooleanField(default=False)
     total=models.PositiveIntegerField()
     email = models.CharField(max_length = 200, null = True)
-    
-    @property
-    def get_order_items(self):
-        return self.purchaseitems.all()
+    order_id=models.CharField(max_length=200,null=True)
 
-
-class OrderItems(models.Model):
-    order_object=models.ForeignKey(Order,on_delete=models.CASCADE,related_name="purchaseitems")
-    basket_item_object=models.ForeignKey(BasketItem,on_delete=models.CASCADE)
+    options=(
+        ("cod","cod"),
+        ("online","online")
+    )
+    payment=models.CharField(max_length=200,choices=options,default="cod")
     option=(
         ("order-placed","order-placed"),
         ("intransit","intransit"),
@@ -101,6 +106,24 @@ class OrderItems(models.Model):
         ("cancelled","cancelled")
     )
     status=models.CharField(max_length=200,choices=option,default="order-placed")
+    
+    @property
+    def get_order_items(self):
+        return self.purchaseitems.all()
+
+    
+    @property
+    def get_order_total(self):
+        purchase_items=self.get_order_items
+        order_total=0
+        if purchase_items:
+            order_total=sum([pi.basket_item_object.item_total for pi in purchase_items])
+        return order_total
+
+
+class OrderItems(models.Model):
+    order_object=models.ForeignKey(Order,on_delete=models.CASCADE,related_name="purchaseitems")
+    basket_item_object=models.ForeignKey(BasketItem,on_delete=models.CASCADE)
 
 
 
